@@ -14,4 +14,6 @@ use App\Http\Controllers\AuthController;
     });
     Route::post('/orders', [OrderController::class, 'store']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/mes-commandes', [OrderController::class, 'mesCommandes']);
+    Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
 });
