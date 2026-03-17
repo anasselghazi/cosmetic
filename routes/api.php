@@ -1,15 +1,17 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Models\User ;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AuthController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
-Route::get('/test-token', function () {
-    $user::where('email', 'admin@gmail.com')->first();
-    $token = $user->createToken('test')->plainTextToken;
-    return ['token' => $token];
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login',    [AuthController::class, 'login']);
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) { 
+        return $request->user(); 
+    });
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
