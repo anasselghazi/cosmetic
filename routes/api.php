@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
-use App\Middleware\IsEmployee;
+use App\Http\Controllers\AdminController;
 
 
 
@@ -20,5 +20,5 @@ use App\Middleware\IsEmployee;
     Route::get('/mes-commandes', [OrderController::class, 'mesCommandes']);
     Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
     Route::post('/orders/{id}/prepare',  [OrderController::class, 'prepare'])->middleware('is.employee');
-
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware('is.admin');
 });
