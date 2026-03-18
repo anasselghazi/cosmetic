@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
+use App\Middleware\IsEmployee;
+
+
 
 
     Route::post('/register', [AuthController::class, 'register']);
@@ -16,4 +19,6 @@ use App\Http\Controllers\AuthController;
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/mes-commandes', [OrderController::class, 'mesCommandes']);
     Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
+    Route::post('/orders/{id}/prepare',  [OrderController::class, 'prepare'])->middleware('is.employee');
+
 });

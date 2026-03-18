@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Middleware\IsEmployee;
 
 
 
@@ -18,7 +19,8 @@ class OrderController extends Controller
             'product_id'  => $request->product_id,
             'quantity'    => $request->quantity,
             'total_price' => $product->price * $request->quantity,
-            'status'      => 'en_attente',
+            'status'     => $request->status ?? 'en_attente',
+            
         ]);
 
        
@@ -76,6 +78,30 @@ class OrderController extends Controller
 
     return response()->json([
         'message' => 'Commande annulée avec succès',
+        'order'   => $order
+    ]);
+}   
+
+   public function prepare(Request $request, $id)
+{
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json([
+            'message' => 'Commande introuvable'
+        ], 404);
+    }
+
+    if ($order->status !== 'en_attente') {
+        return response()->json([
+            'message' => 'Impossible de préparer une commande ' . $order->status
+        ], 400);
+    }
+
+    $order->update(['status' => 'en_preparation']);
+
+    return response()->json([
+        'message' => 'Commande en préparation',
         'order'   => $order
     ]);
 }

@@ -25,6 +25,7 @@ class StoreOrderRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
             'quantity'   => 'required|integer|min:1',
+            'status' => 'in:en_attente, en_preparation , confirmee, livree, annulee',
         ];
     }
 }
